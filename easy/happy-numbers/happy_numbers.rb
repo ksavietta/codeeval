@@ -11,19 +11,21 @@ require 'pry'
 
 class HappyNumber
   def self.transform_happy_number(line)
-    happy_number_array = line.split("").map {|x| x.to_i}
-    total = 0
-    squared_array = happy_number_array.map {|x| x**2}
-    total = squared_array.inject{|sum,x| sum+x}
     number_path_array = []
-    if total == 1
-      puts "hooray"
-    elsif number_path_array.include?(total)
-      puts "nope"
-    else
+    total = 0
+    number = line
+    until number_path_array.include?(1) || number_path_array.include?(total)
       number_path_array << total
-      line = total.to_s
-      HappyNumber.transform_happy_number(line)
+      happy_number_array = number.split("").map {|x| x.to_i}
+      squared_array = happy_number_array.map {|x| x**2}
+      total = squared_array.inject{|sum,x| sum+x}
+      number = total.to_s
+    end
+
+    if number_path_array.include?(1)
+      puts 1
+    else
+      puts 0
     end
   end
 end
@@ -31,3 +33,6 @@ end
 File.open(ARGV[0]).each_line do |line|
   HappyNumber.transform_happy_number(line)
 end
+
+
+
